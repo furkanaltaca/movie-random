@@ -1,8 +1,17 @@
-import React, { useState } from 'react';
-import { View, Text, Button, ActivityIndicator, Image, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
-import { fetchRandomMovie } from '../services/tmdb';
-import { useMovie } from '../context/MovieContext';
-import { useNavigation } from '@react-navigation/native';
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  Button,
+  ActivityIndicator,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  SafeAreaView,
+} from "react-native";
+import { fetchRandomMovie } from "../services/tmdb";
+import { useMovie } from "../context/MovieContext";
+import { useNavigation } from "@react-navigation/native";
 
 const HomeScreen = () => {
   const [movie, setMovie] = useState(null);
@@ -12,6 +21,7 @@ const HomeScreen = () => {
 
   const getMovie = async () => {
     setLoading(true);
+    setMovie(null);
     try {
       const data = await fetchRandomMovie();
       setMovie(data);
@@ -26,24 +36,37 @@ const HomeScreen = () => {
   };
 
   const handleDetail = () => {
-    if (movie) navigation.navigate('Details', { movie });
+    if (movie) navigation.navigate("Details", { movie });
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <Button title="🎬 Rastgele Film Getir" onPress={getMovie} />
-      {loading && <ActivityIndicator size="large" color="#0000ff" style={{ marginTop: 20 }} />}
+      <TouchableOpacity style={styles.buttonGetMovie} onPress={getMovie}>
+        <Text style={styles.buttonText}>Rastgele Film Getir 🎬</Text>
+      </TouchableOpacity>
+      {loading && (
+        <ActivityIndicator
+          size="large"
+          color="#213448"
+          style={styles.spinner}
+        />
+      )}
       {movie && (
         <View style={styles.movieContainer}>
           <Text style={styles.title}>{movie.title}</Text>
           <TouchableOpacity onPress={handleDetail}>
             <Image
-              source={{ uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}` }}
+              source={{
+                uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+              }}
               style={styles.poster}
               resizeMode="contain"
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={handleAddFavorite} style={styles.button}>
+          <TouchableOpacity
+            onPress={handleAddFavorite}
+            style={styles.buttonAddToFavorite}
+          >
             <Text style={styles.buttonText}>Favorilere Ekle ❤️</Text>
           </TouchableOpacity>
         </View>
@@ -56,32 +79,48 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    backgroundColor: "#547792",
+    alignItems: "center",
+    justifyContent: "center",
   },
   movieContainer: {
     marginTop: 20,
-    alignItems: 'center',
+    alignItems: "center",
   },
   title: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 10,
-    textAlign: 'center',
+    textAlign: "center",
+    color: "white",
   },
   poster: {
     width: 300,
     height: 450,
     borderRadius: 8,
   },
-  button: {
+  buttonAddToFavorite: {
     marginTop: 15,
-    backgroundColor: '#FF5A5F',
+    backgroundColor: "#213448",
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 8,
   },
   buttonText: {
-    color: 'white',
-    fontWeight: 'bold',
+    color: "white",
+    fontWeight: "bold",
+  },
+  buttonGetMovie: {
+    position: "absolute",
+    bottom: 30,
+    backgroundColor: "#213448",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    alignSelf: "center",
+  },
+  spinner: {
+    alignSelf: "center",
   },
 });
 

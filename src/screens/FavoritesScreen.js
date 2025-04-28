@@ -1,5 +1,12 @@
 import React from "react";
-import { View, Text, FlatList, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
 import { useMovie } from "../context/MovieContext";
 
 const FavoritesScreen = ({ navigation }) => {
@@ -21,23 +28,17 @@ const FavoritesScreen = ({ navigation }) => {
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => removeFromFavorites(item.id)}
-        style={{
-          marginTop: 10,
-          backgroundColor: "#ccc",
-          paddingVertical: 6,
-          paddingHorizontal: 16,
-          borderRadius: 6,
-        }}
+        style={styles.buttonRemoveFavorite}
       >
-        <Text style={{ color: "black" }}>Favorilerden Kaldır</Text>
+        <Text style={styles.buttonText}>Favorilerden Kaldır 🗑️</Text>
       </TouchableOpacity>
     </View>
   );
 
   return (
-    <View style={{ padding: 20 }}>
+    <View style={styles.container}>
       {favorites.length === 0 ? (
-        <Text>Henüz favorilere film eklenmedi.</Text>
+        <Text style={styles.infoText}>Henüz favorilere film eklenmedi.</Text>
       ) : (
         <FlatList
           data={favorites}
@@ -48,5 +49,30 @@ const FavoritesScreen = ({ navigation }) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: "#547792",
+    color: "white",
+  },
+  buttonRemoveFavorite: {
+    marginTop: 10,
+    backgroundColor: "#213448",
+    paddingVertical: 6,
+    paddingHorizontal: 16,
+    borderRadius: 6,
+  },
+  buttonText: {
+    color: "white",
+    fontWeight: "bold",
+  },
+  infoText: {
+    color: "white",
+    fontWeight: "bold",
+    alignSelf: "center",
+  },
+});
 
 export default FavoritesScreen;
