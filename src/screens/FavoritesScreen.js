@@ -8,9 +8,11 @@ import {
   StyleSheet,
 } from "react-native";
 import { useMovie } from "../context/MovieContext";
+import { useNavigation } from "@react-navigation/native";
 
-const FavoritesScreen = ({ navigation }) => {
+const FavoritesScreen = () => {
   const { favorites, removeFromFavorites } = useMovie();
+  const navigation = useNavigation();
 
   const renderItem = ({ item }) => (
     <View style={{ marginBottom: 20, alignItems: "center" }}>
@@ -18,7 +20,7 @@ const FavoritesScreen = ({ navigation }) => {
         {item.title}
       </Text>
       <TouchableOpacity
-        onPress={() => navigation.navigate("Details", { item })}
+        onPress={() => navigation.navigate("Details", { movie: item })}
       >
         <Image
           source={{ uri: `https://image.tmdb.org/t/p/w300${item.poster_path}` }}
