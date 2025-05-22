@@ -5,13 +5,12 @@ const BASE_URL = 'https://api.themoviedb.org/3';
 
 export const fetchRandomMovie = async () => {
   try {
-    // TMDB'de sayfa 1-500 arası var, rastgele sayfa seçiyoruz
     const randomPage = Math.floor(Math.random() * 500) + 1;
     
     const response = await axios.get(`${BASE_URL}/discover/movie`, {
       params: {
         api_key: API_KEY,
-        language: 'en-US',
+        language: 'tr-TR',
         sort_by: 'popularity.desc',
         page: randomPage,
       },
