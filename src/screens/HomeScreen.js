@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -16,8 +16,18 @@ import { useNavigation } from "@react-navigation/native";
 const HomeScreen = () => {
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(false);
-  const { addToFavorites } = useMovie();
+  const { favorites, addToFavorites, removeFromFavorites } = useMovie();
+  const isFavorite = movie && favorites.some((fav) => fav.id === movie.id);
   const navigation = useNavigation();
+
+  const hasLoaded = useRef(false);
+
+  useEffect(() => {
+    if (!hasLoaded.current) {
+      getMovie();
+      hasLoaded.current = true;
+    }
+  }, []);
 
   const getMovie = async () => {
     setLoading(true);
@@ -31,8 +41,13 @@ const HomeScreen = () => {
     setLoading(false);
   };
 
-  const handleAddFavorite = () => {
-    if (movie) addToFavorites(movie);
+  const handleToggleFavorite = () => {
+    if (!movie) return;
+    if (isFavorite) {
+      removeFromFavorites(movie.id);
+    } else {
+      addToFavorites(movie);
+    }
   };
 
   const handleDetail = () => {
@@ -64,10 +79,15 @@ const HomeScreen = () => {
             />
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={handleAddFavorite}
-            style={styles.buttonAddToFavorite}
+            onPress={handleToggleFavorite}
+            style={[
+              styles.buttonAddToFavorite,
+              { backgroundColor: isFavorite ? "#FF5A5F" : "#4CAF50" },
+            ]}
           >
-            <Text style={styles.buttonText}>Favorilere Ekle ❤️</Text>
+            <Text style={styles.buttonText}>
+              {isFavorite ? "Favorilerden Çıkar ❌" : "Favorilere Ekle ❤️"}
+            </Text>
           </TouchableOpacity>
         </View>
       )}
