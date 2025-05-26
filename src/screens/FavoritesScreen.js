@@ -8,33 +8,13 @@ import {
   StyleSheet,
 } from "react-native";
 import { useMovie } from "../context/MovieContext";
-import { useNavigation } from "@react-navigation/native";
+import MovieCard from "../components/MovieCard";
 
 const FavoritesScreen = () => {
-  const { favorites, removeFromFavorites } = useMovie();
-  const navigation = useNavigation();
+  const { favorites } = useMovie();
 
   const renderItem = ({ item }) => (
-    <View style={{ marginBottom: 20, alignItems: "center" }}>
-      <Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 5 }}>
-        {item.title}
-      </Text>
-      <TouchableOpacity
-        onPress={() => navigation.navigate("Details", { movie: item })}
-      >
-        <Image
-          source={{ uri: `https://image.tmdb.org/t/p/w300${item.poster_path}` }}
-          style={{ width: 200, height: 300 }}
-          resizeMode="contain"
-        />
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => removeFromFavorites(item.id)}
-        style={styles.buttonRemoveFavorite}
-      >
-        <Text style={styles.buttonText}>Favorilerden Kaldır 🗑️</Text>
-      </TouchableOpacity>
-    </View>
+    <MovieCard movie={item} showOverview={false} />
   );
 
   return (
@@ -58,13 +38,6 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: "#547792",
     color: "white",
-  },
-  buttonRemoveFavorite: {
-    marginTop: 10,
-    backgroundColor: "#213448",
-    paddingVertical: 6,
-    paddingHorizontal: 16,
-    borderRadius: 6,
   },
   buttonText: {
     color: "white",
