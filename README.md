@@ -66,7 +66,7 @@ API Key açık olarak paylaşılmamalıdır, bu yüzden `.env` dosyasına taşı
   npm install -g expo-cli
 - Reponun klonunu almak için:  
   ```bash
-  git clone https://github.com/kullaniciAdi/movie-random.git
+  git clone https://github.com/furkanaltaca/movie-random.git
   cd movie-random
 - Bağımlılıkları yüklemek için:  
   ```bash
